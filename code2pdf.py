@@ -14,22 +14,33 @@ current_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
 def showUsage():
     print "## Code to PDF Written in Python"
-    print "## Date:2013.01.05"
-    print "## Usage: python code2pdf.py [options] src_code\n"
+    print "## Date:2013.03.17"
+    print "## Usage: python code2pdf.py [options] src_code0 src_code1 ...\n"
     print """Options:
   -h, --help     show this help message and exit
   -v, --version  Show the version
   -o             specify output file name (default:code.pdf)"""
 
 def showVersion():
-    print "Code to PDF Written in Python v1.0  last upated:2013.01.07"
+    print "Code to PDF Written in Python v1.1  last upated:2013.03.17"
 
 def code2pdf():
-    print "## input file: %s" % src
-    commands.getoutput("env LC_ALL=ja._JP.EUCJP a2ps -A fill --medium=a4 -f 6.5 --line-numbers=1 -o %s.ps %s" % (src, src))
-    commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 %s.ps %s.pdf" % (src, pdf_name))
-    commands.getoutput("rm %s.ps" % src)
-    print "## output pdf file successfully! (%s -> %s.pdf)" % (src, pdf_name)
+    print "The number of codes: %d" % len(codelist)
+    print "\ncodelist:"
+    print "----------------------------------------"
+    for src in codelist:
+        print "%s" % src
+        commands.getoutput("env LC_ALL=ja._JP.EUCJP a2ps -A fill --medium=a4 -f 6.5 --line-numbers=1 -o %s.ps %s" % (src, src))
+    if len(codelist) == 1:
+        commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 %s.ps %s.pdf" % (src, pdf_name))
+        commands.getoutput("rm %s.ps" % src)
+    else:
+        commands.getoutput("cat *.ps > merge.ps")
+        commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 merge.ps %s.pdf" % (pdf_name))
+        commands.getoutput("rm *.ps")
+    print "----------------------------------------"
+    print "\n## output pdf file successfully!" 
+    print "## PDF NAME: %s.pdf" % pdf_name
     print "## Date:",current_str
 
 optparser = OptionParser() 
@@ -48,24 +59,21 @@ if len(args) == 0:
     sys.exit()
 
 if options.output:
-    if len(args) != 2:
-        print "## Error! The number of argument is wrong."
+    pdf_name = args[0]
+    del args[0]
+    codelist = args
+    if len(codelist) == 0: 
+        print "## Error! No source code exists!"
         sys.exit()
-    else:
-        pdf_name = args[0]
-        src = args[1]
 else:
-    if len(args) > 1:
-        print "## Error! The number of argument is wrong."
-        sys.exit()
-    else:
-        pdf_name = DEFAULT
-        src = args[0]
+    pdf_name = DEFAULT
+    codelist = args
 
-if not os.path.isfile(src):
-    print "## Error! No such file: " + src
-    print "## Usage: python code2pdf.py [options] src_code"
-    sys.exit()
+for src in codelist:
+    if not os.path.isfile(src):
+        print "## Error! No such file: " + src
+        print "## Usage: python code2pdf.py [options] src_code0 src_code1 ..."
+        sys.exit()
 
 if __name__ == "__main__":
     code2pdf()
