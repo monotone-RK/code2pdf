@@ -14,7 +14,7 @@ current_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
 def showUsage():
     print "## Code to PDF Written in Python"
-    print "## Date:2013.03.17"
+    print "## Date:2013.03.18"
     print "## Usage: python code2pdf.py [options] src_code0 src_code1 ...\n"
     print """Options:
   -h, --help     show this help message and exit
@@ -22,7 +22,7 @@ def showUsage():
   -o             specify output file name (default:code.pdf)"""
 
 def showVersion():
-    print "Code to PDF Written in Python v1.1  last upated:2013.03.17"
+    print "Code to PDF Written in Python v1.1.1  last upated:2013.03.18"
 
 def code2pdf():
     print "The number of codes: %d" % len(codelist)
@@ -35,9 +35,11 @@ def code2pdf():
         commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 %s.ps %s.pdf" % (src, pdf_name))
         commands.getoutput("rm %s.ps" % src)
     else:
-        commands.getoutput("cat *.ps > merge.ps")
+        for src in codelist:
+            commands.getoutput("cat %s.ps >> merge.ps" % src)
+            commands.getoutput("rm %s.ps" % src)
         commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 merge.ps %s.pdf" % (pdf_name))
-        commands.getoutput("rm *.ps")
+        commands.getoutput("rm merge.ps")
     print "----------------------------------------"
     print "\n## output pdf file successfully!" 
     print "## PDF NAME: %s.pdf" % pdf_name
