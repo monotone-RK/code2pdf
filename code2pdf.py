@@ -31,15 +31,10 @@ def code2pdf():
     for src in codelist:
         print "%s" % src
         commands.getoutput("env LC_ALL=ja._JP.EUCJP a2ps -A fill --medium=a4 -f 6.5 --line-numbers=1 -o %s.ps %s" % (src, src))
-    if len(codelist) == 1:
-        commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 %s.ps %s.pdf" % (src, pdf_name))
+        commands.getoutput("cat %s.ps >> merge.ps" % src)
         commands.getoutput("rm %s.ps" % src)
-    else:
-        for src in codelist:
-            commands.getoutput("cat %s.ps >> merge.ps" % src)
-            commands.getoutput("rm %s.ps" % src)
-        commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 merge.ps %s.pdf" % (pdf_name))
-        commands.getoutput("rm merge.ps")
+    commands.getoutput("ps2pdf14 -sPAPERSIZE=a4 merge.ps %s.pdf" % (pdf_name))
+    commands.getoutput("rm merge.ps")
     print "----------------------------------------"
     print "\n## output pdf file successfully!" 
     print "## PDF NAME: %s.pdf" % pdf_name
