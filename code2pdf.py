@@ -1,17 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#***************************************************************************************/
-# Code to PDF Written in Python             Ver:1.0 Last updated 2013.01.07  monotone-RK/
-#***************************************************************************************/
+#******************************************************************************/
+# Code to PDF Written in Python v1.0       Last Updated 2013.01.07  monotone-RK/
+#******************************************************************************/
 import sys
 import os
 import datetime
 import commands
 from optparse import OptionParser
 
+optparser = OptionParser() 
+optparser.add_option("-v","--version",action="store_true",dest="showversion",
+                     default=False,help="Show the version")
+optparser.add_option("-o",action="store_true",dest="output",
+                     default=False,help="specify output file name (default:code.pdf)")
+(options, args) = optparser.parse_args()
+
+#** pdf name, current datetime                                               **/
+#******************************************************************************/  
 DEFAULT = "code" # Default PDF name
 current_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
+#** functions                                                                **/
+#******************************************************************************/  
 def showUsage():
     print "## Code to PDF Written in Python"
     print "## Date:2013.03.18"
@@ -40,13 +51,8 @@ def code2pdf():
     print "## PDF NAME: %s.pdf" % pdf_name
     print "## Date:",current_str
 
-optparser = OptionParser() 
-optparser.add_option("-v","--version",action="store_true",dest="showversion",
-                     default=False,help="Show the version")
-optparser.add_option("-o",action="store_true",dest="output",
-                     default=False,help="specify output file name (default:code.pdf)")
-(options, args) = optparser.parse_args()
-
+#** process                                                                  **/
+#******************************************************************************/  
 if options.showversion:
     showVersion()
     sys.exit()
