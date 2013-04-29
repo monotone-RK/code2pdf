@@ -23,6 +23,9 @@ current_str = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
 #** functions                                                                **/
 #******************************************************************************/  
+def showVersion():
+    print "Code to PDF Written in Python v1.1.1  last upated:2013.03.18"
+
 def showUsage():
     print "## Code to PDF Written in Python"
     print "## Date:2013.03.18"
@@ -31,9 +34,6 @@ def showUsage():
   -h, --help     show this help message and exit
   -v, --version  Show the version
   -o             specify output file name (default:code.pdf)"""
-
-def showVersion():
-    print "Code to PDF Written in Python v1.1.1  last upated:2013.03.18"
 
 def code2pdf():
     print "The number of codes: %d" % len(codelist)
